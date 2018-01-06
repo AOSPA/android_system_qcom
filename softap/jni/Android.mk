@@ -9,6 +9,8 @@ LOCAL_SRC_FILES := QWiFiSoftApCfg.c
 
 LOCAL_MODULE := libQWiFiSoftApCfg
 
+LOCAL_LDLIBS := -llog
+
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
