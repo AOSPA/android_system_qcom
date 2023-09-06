@@ -350,7 +350,7 @@ static s32 qsap_write_cfg(s8 *pfile, struct Command * pcmd, s8 *pVal, s8 *presp,
     s8 buf[MAX_CONF_LINE_LEN+1];
     s16 len, result = FALSE;
 
-    ALOGD("cmd=%s, Val:%s, INI:%d \n", pcmd->name, pVal, inifile);
+    ALOGD("cmd=%s, Val:%s, INI:%d \n", pcmd->name, pVal, (int)inifile);
 
     /** Open the configuration file */
     fcfg = fopen(pfile, "r");
@@ -641,6 +641,10 @@ static void qsap_set_security_mode(s8 *pfile, u32 sec_mode, s8 *presp, u32 *plen
         else if(sec_mode == SEC_MODE_WPA_WPA2_PSK) {
             wpa_val = WPA_WPA2_IN_CONF_FILE;
             rsn_status = ENABLE;
+        }
+
+        else {
+            goto end;
         }
 
         qsap_scnprintf(sec, sizeof(sec), "%u", wpa_val);
@@ -1243,7 +1247,7 @@ int qsap_get_operating_channel(s32 *pchan)
 
     ALOGE("Recv len :%d \n", wrq.u.data.length);
     *pchan = *(int *)(&wrq.u.name[0]);
-    ALOGE("Operating channel :%d \n", *pchan);
+    ALOGE("Operating channel :%d \n", (int)*pchan);
     close(sock);
     return eSUCCESS;
 
@@ -1306,7 +1310,7 @@ int qsap_get_sap_auto_channel_selection(s32 *pautochan)
 
     ALOGD("Recv len :%d \n", wrq.u.data.length);
     *pautochan = *(int *)(&wrq.u.name[0]);
-    ALOGD("Sap auto channel selection pautochan=%d \n", *pautochan);
+    ALOGD("Sap auto channel selection pautochan=%d \n", (int)*pautochan);
     close(sock);
     return eSUCCESS;
 
@@ -2885,7 +2889,7 @@ static void qsap_handle_set_request(s8 *pcmd, s8 *presp, u32 *plen)
 
         case eCMD_RESET_AP:
             value = atoi(pVal);
-            ALOGE("Reset :%d \n", value);
+            ALOGE("Reset :%d \n", (int)value);
             if(SAP_RESET_BSS == value) {
                 status = wifi_qsap_stop_softap();
                 if(status == eSUCCESS) {
