@@ -1,0 +1,95 @@
+soong_config_module_type {
+    name: "qsap_sdk_config_defaults",
+    module_type: "cc_defaults",
+    config_namespace: "wifi",
+    value_variables: [
+        "driver_module_path",      // WIFI_DRIVER_MODULE_PATH
+        "driver_module_arg",       // WIFI_DRIVER_MODULE_ARG
+        "driver_module_name",      // WIFI_DRIVER_MODULE_NAME
+        "sdio_if_driver_path",     // WIFI_SDIO_IF_DRIVER_MODULE_PATH
+        "sdio_if_driver_name",     // WIFI_SDIO_IF_DRIVER_MODULE_NAME
+        "cfg80211_driver_path",    // WIFI_CFG80211_DRIVER_MODULE_PATH
+        "cfg80211_driver_arg",     // WIFI_CFG80211_DRIVER_MODULE_ARG
+        "cfg80211_driver_name",    // WIFI_CFG80211_DRIVER_MODULE_NAME
+        "driver_conf_file",        // WIFI_DRIVER_CONF_FILE
+        "driver_def_conf_file",    // WIFI_DRIVER_DEF_CONF_FILE
+    ],
+    properties: ["cflags"],
+}
+
+qsap_sdk_config_defaults {
+    name: "libqsap_sdk_defaults",
+    soong_config_variables: {
+        driver_module_path: {
+            cflags: ["-DWIFI_DRIVER_MODULE_PATH=\"%s\""],
+        },
+        driver_module_arg: {
+            cflags: ["-DWIFI_DRIVER_MODULE_ARG=\"%s\""],
+        },
+        driver_module_name: {
+            cflags: ["-DWIFI_DRIVER_MODULE_NAME=\"%s\""],
+        },
+        sdio_if_driver_path: {
+            cflags: ["-DWIFI_SDIO_IF_DRIVER_MODULE_PATH=\"%s\""],
+        },
+        sdio_if_driver_name: {
+            cflags: ["-DWIFI_SDIO_IF_DRIVER_MODULE_NAME=\"%s\""],
+        },
+        cfg80211_driver_path: {
+            cflags: ["-DWIFI_CFG80211_DRIVER_MODULE_PATH=\"%s\""],
+        },
+        cfg80211_driver_arg: {
+            cflags: ["-DWIFI_CFG80211_DRIVER_MODULE_ARG=\"%s\""],
+        },
+        cfg80211_driver_name: {
+            cflags: ["-DWIFI_CFG80211_DRIVER_MODULE_NAME=\"%s\""],
+        },
+        driver_conf_file: {
+            cflags: ["-DWIFI_DRIVER_CONF_FILE=\"%s\""],
+        },
+        driver_def_conf_file: {
+            cflags: ["-DWIFI_DRIVER_DEF_CONF_FILE=\"%s\""],
+        },
+    },
+}
+
+cc_library_shared {
+    name: "libqsap_sdk",
+    defaults: ["libqsap_sdk_defaults"],
+    vendor: true,
+
+    srcs: [
+        "qsap_api.c",
+        "qsap.c",
+    ],
+
+    shared_libs: [
+        "libbinder",
+        "libcutils",
+        "libhardware_legacy",
+        "liblog",
+        "libnetutils",
+        "libnl",
+        "libutils",
+    ],
+
+    header_libs: [
+        "libcutils_headers",
+        "wifi_legacy_headers",
+    ],
+
+    export_include_dirs: ["."],
+
+    cflags: [
+        "-DSDK_VERSION=\"0.0.1.0\"",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+}
+
+cc_library_headers {
+    name: "libqsap_headers",
+    vendor: true,
+    export_include_dirs: ["."],
+}
